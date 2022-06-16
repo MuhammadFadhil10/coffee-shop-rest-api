@@ -4,11 +4,11 @@ import bodyParser from 'body-parser';
 
 const app = express();
 
+import productRoutes from './routes/products.js';
+
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/', (req, res, next) => {
-	res.send('hello world');
-});
+app.use(productRoutes);
 
 app.listen(process.env.PORT || 5000, () => console.log('server running..'));
