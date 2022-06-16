@@ -19,5 +19,21 @@ export const getAllProducts = async (req, res, next) => {
 			.json({ status: 'not found', message: 'no products!' });
 	}
 
-	return res.status(200).json({ status: 'success', result: products });
+	return res.status(200).json({
+		status: 'success',
+		totalProducts: products.length,
+		result: products,
+	});
+};
+
+export const productsSort = async (req, res, next) => {
+	const sortBy = req.query.by;
+	const { ascending, descending } = req.query;
+
+	if (sortBy === 'price' && ascending) {
+		const [products] = await Product.sortProductAsc();
+		return res.json({ status: 'success', result: products });
+	}
+	const [products] = await Product.sortProductDesc();
+	return res.json({ status: 'success', result: products });
 };

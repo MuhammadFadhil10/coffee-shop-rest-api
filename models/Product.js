@@ -14,4 +14,12 @@ export default class Product {
 			productPrice,
 		]);
 	}
+
+	static sortProductAsc() {
+		return db.execute(`SELECT * FROM products ORDER BY price ASC`);
+	}
+
+	static sortProductDesc() {
+		return db.execute(`SELECT * FROM products ORDER BY price DESC`);
+	}
 }
