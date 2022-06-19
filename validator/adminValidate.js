@@ -1,14 +1,23 @@
 import { body } from 'express-validator';
 
+import { Admin } from '../models/admin.js';
+
 export default class Validate {
-	static email(fieldName) {
+	static registerEmail(fieldName) {
 		return body(fieldName)
 			.notEmpty()
 			.withMessage('email required!')
 			.isEmail()
-			.withMessage('insert an valid email!');
+			.withMessage('insert an valid email!')
+			.custom(async (value) => {
+				const [admin] = await Admin.findByEmail(value);
+				if (admin[0]) {
+					throw new Error('email already exist!');
+				}
+				return true;
+			});
 	}
-	static password(fieldName) {
+	static registerPassword(fieldName) {
 		return body(fieldName)
 			.notEmpty()
 			.withMessage('password required')
@@ -22,5 +31,27 @@ export default class Validate {
 			}
 			return true;
 		});
+	}
+	static loginEmail(fieldName) {
+		return body(fieldName)
+			.notEmpty()
+			.withMessage('email required!')
+			.isEmail()
+			.withMessage('insert an valid email!')
+			.custom(async (value) => {
+				const [admin] = await Admin.findByEmail(value);
+				if (!admin[0]) {
+					throw new Error('email or password wrong!');
+				}
+				if (admin[0].is_auth === 0) {
+					throw new Error(
+						'your email is not verified, activate first in your inbox'
+					);
+				}
+				return true;
+			});
+	}
+	static loginPassword(fieldName) {
+		return body(fieldName).notEmpty().withMessage('password required');
 	}
 }
