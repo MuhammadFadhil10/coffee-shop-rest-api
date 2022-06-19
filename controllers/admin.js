@@ -1,3 +1,3 @@
 export const adminRegister = (req, res, next) => {
-	const { email, password } = req.body;
+	const { email, password, confirmPassword } = req.body;
 };
