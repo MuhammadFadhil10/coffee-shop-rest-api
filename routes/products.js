@@ -6,15 +6,16 @@ import {
 	getAllProducts,
 	addProducts,
 	productsSort,
+	searchProducts,
 } from '../controllers/product.js';
 
 // GET
-// get all products sort from cheap || expensive
-router.get(`/products/sort`, productsSort);
 // get all products
 router.get('/products', getAllProducts);
+// /products/search?value=asdaddsa
+router.get(`/products/search`, searchProducts);
 
 // POST
-router.post('/add-product/:productName/:productPrice', addProducts);
+router.post('/add-product', addProducts);
 
 export default router;
