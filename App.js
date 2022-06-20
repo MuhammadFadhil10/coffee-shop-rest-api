@@ -4,13 +4,15 @@ import bodyParser from 'body-parser';
 
 const app = express();
 
-import adminAuth from './routes/adminAuth.js';
+import adminAuthRoutes from './routes/adminAuth.js';
+import adminRoutes from './routes/admin.js';
 import productRoutes from './routes/products.js';
 
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use(productRoutes);
-app.use('/admin', adminAuth);
+app.use('/admin', adminAuthRoutes);
+app.use('/admin', adminRoutes);
 
 app.listen(process.env.PORT || 5000, () => console.log('server running..'));

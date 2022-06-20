@@ -2,6 +2,10 @@ import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import { v4 } from 'uuid';
 
+import {
+	createAccessToken,
+	createRefreshToken,
+} from '../tokens/createToken.js';
 import { Admin } from '../models/admin.js';
 import { Email } from '../models/sendEmail.js';
 
@@ -54,5 +58,13 @@ export const adminLogin = async (req, res, next) => {
 			.status(401)
 			.json({ status: 'error', message: 'email or password wrong' });
 	}
-	return res.status(401).json({ status: 'success', message: 'Login success!' });
+
+	const adminAccessToken = createAccessToken(admin[0].admin_id);
+	const adminRefreshToken = createRefreshToken(admin[0].admin_id);
+	return res.status(401).json({
+		status: 'success',
+		message: 'Login success!',
+		token: adminAccessToken,
+		refreshToken: adminRefreshToken,
+	});
 };
