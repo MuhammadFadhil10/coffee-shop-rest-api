@@ -12,13 +12,13 @@ export const addProducts = async (req, res, next) => {
 
 export const getAllProducts = async (req, res, next) => {
 	const { sort, page, show } = req.query;
-	console.log(sort);
 	const [products] = await Product.fetchAll(sort, page, show);
 
 	if (!products[0]) {
-		return res
-			.status(404)
-			.json({ status: 'not found', message: 'no products!' });
+		return res.json({
+			status: 'not found',
+			message: 'Look like there is no product available:(',
+		});
 	}
 
 	return res.status(200).json({

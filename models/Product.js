@@ -1,5 +1,3 @@
-import { v4 } from 'uuid';
-
 import db from '../database/db.js';
 
 export default class Product {
@@ -10,14 +8,6 @@ export default class Product {
 			return db.execute(`SELECT * FROM products ORDER BY price DESC LIMIT 10 `);
 		}
 		return db.execute(`SELECT * FROM products LIMIT 10`);
-	}
-
-	static addProduct(productName, productPrice) {
-		return db.execute(`INSERT INTO products(id,name,price) VALUES(?,?,?)`, [
-			v4(),
-			productName,
-			productPrice,
-		]);
 	}
 
 	static sortProductAsc() {

@@ -1,3 +1,5 @@
+import { v4 } from 'uuid';
+
 import db from '../database/db.js';
 
 export class Admin {
@@ -19,5 +21,16 @@ export class Admin {
 	}
 	static findByEmail(email) {
 		return db.execute(`SELECT * FROM admin WHERE email = '${email}'`);
+	}
+	// product related data
+	static getProducts() {
+		return db.execute(`SELECT * FROM products`);
+	}
+	static addProduct(productName, productPrice) {
+		return db.execute(`INSERT INTO products(id,name,price) VALUES(?,?,?)`, [
+			v4(),
+			productName,
+			productPrice,
+		]);
 	}
 }

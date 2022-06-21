@@ -14,7 +14,7 @@ export class Email {
 			to: email,
 			subject: 'Activation',
 			html: `<h1>Hi! you have to activate your account</h1>
-            <a href="http://localhost:5000/admin/activation/${activateAccountToken}" target="_blank">
+            <a href="${process.env.ORIGIN}/account/activation/${activateAccountToken}" target="_blank">
             Click here to activate!
             </a>`,
 		});

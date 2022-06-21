@@ -13,13 +13,13 @@ import {
 router.get('/activation/:activationToken', activateAccount);
 
 // POST
-router.post(
-	'/register',
-	adminValidate.registerEmail('email'),
-	adminValidate.registerPassword('password'),
-	adminValidate.confirmPassword('confirmPassword'),
-	adminRegister
-);
+// router.post(
+// 	'/register',
+// 	adminValidate.registerEmail('email'),
+// 	adminValidate.registerPassword('password'),
+// 	adminValidate.confirmPassword('confirmPassword'),
+// 	adminRegister
+// );
 
 router.post(
 	'/login',
