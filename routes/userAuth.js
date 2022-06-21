@@ -6,6 +6,8 @@ import {
 	userLogin,
 	activateAccount,
 	newActivationToken,
+	forgotPassword,
+	updatePassword,
 } from '../controllers/userAuth.js';
 
 const router = express.Router();
@@ -28,5 +30,11 @@ router.post(
 	userLogin
 );
 router.post('/activation/new-token/:email', newActivationToken);
+router.post('/account/reset-password', forgotPassword);
+router.post(
+	'/account/update-password',
+	userValidate.registerPassword('newPassword'),
+	updatePassword
+);
 
 export default router;

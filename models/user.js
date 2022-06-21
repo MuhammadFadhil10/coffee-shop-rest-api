@@ -23,4 +23,9 @@ export default class User {
 			`UPDATE user SET is_auth = ${true}, activate_token = default`
 		);
 	}
+	static updatePassword(newPassword, userId) {
+		return db.execute(
+			`UPDATE user SET password = '${newPassword}' where user_id = ${userId}`
+		);
+	}
 }

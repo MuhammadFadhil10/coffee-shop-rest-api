@@ -54,7 +54,7 @@ export const newActivationToken = async (req, res, next) => {
 		return res.json({ status: 'error', message: 'You are not registered!' });
 	}
 	const [userActive] = await User.checkActivationToken(user[0].activate_token);
-	if (user[0]) {
+	if (!userActive[0]) {
 		return res.json({
 			status: 'error',
 			message: 'Your account already active, just login',
@@ -80,7 +80,7 @@ export const userLogin = async (req, res, next) => {
 	const [user] = await User.findByEmail(email);
 	const isMatch = await bcrypt.compare(password, user[0].password);
 	if (!isMatch) {
-		return res.json({ status: 'error', message: 'email or password wrong' });
+		return res.json({ status: 'error', message: ['email or password wrong!'] });
 	}
 
 	const userAccessToken = createAccessToken(user[0].user);
@@ -91,4 +91,31 @@ export const userLogin = async (req, res, next) => {
 		token: userAccessToken,
 		refreshToken: userRefreshToken,
 	});
+};
+
+export const forgotPassword = async (req, res, next) => {
+	const { email } = req.body;
+	const [isRegistered] = await User.findByEmail(email);
+	if (!isRegistered[0]) {
+		return res.json({
+			status: 'error',
+			message: 'your email is not registered!',
+		});
+	}
+	await Email.updatePasswordLink(email, isRegistered[0].user_id);
+	return res.json({
+		status: 'success',
+		message: 'Succes send you a link to reset password!',
+	});
+};
+export const updatePassword = async (req, res, next) => {
+	const { newPassword, userId } = req.body;
+	const error = validationResult(req);
+	const errorMessage = error.array().map((err) => err.msg);
+	if (!error.isEmpty()) {
+		return res.json({ status: 'error', message: errorMessage });
+	}
+	const hashedPassword = await bcrypt.hash(newPassword, 12);
+	await User.updatePassword(hashedPassword, userId);
+	return res.json({ status: 'success', message: 'your password is changed!' });
 };
