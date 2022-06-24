@@ -9,6 +9,8 @@ import {
 	searchProducts,
 } from '../controllers/product.js';
 
+import { isAuth } from '../tokens/isAuth.js';
+
 // GET
 // get all products
 router.get('/products', getAllProducts);

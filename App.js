@@ -5,7 +5,6 @@ import { config } from 'dotenv';
 
 const app = express();
 
-import adminAuthRoutes from './routes/adminAuth.js';
 import adminRoutes from './routes/admin.js';
 import userAuthRoutes from './routes/userAuth.js';
 import productRoutes from './routes/products.js';
@@ -19,7 +18,6 @@ app.use(
 );
 
 app.use(productRoutes);
-app.use('/admin', adminAuthRoutes);
 app.use('/admin', adminRoutes);
 app.use(userAuthRoutes);
 

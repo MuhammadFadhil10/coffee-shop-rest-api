@@ -75,12 +75,27 @@ export const userLogin = async (req, res, next) => {
 	const errorMessage = error.array().map((msg) => msg.msg);
 
 	if (!error.isEmpty()) {
-		return res.json({ status: 'error', message: errorMessage });
+		return res.status(401).json({ status: 'error', message: errorMessage });
 	}
 	const [user] = await User.findByEmail(email);
+	if (!user[0]) {
+		return res.json({
+			status: 'error',
+			message: 'You are not registered, create account first!',
+		});
+	} else if (user[0].activate_token != null) {
+		return res.json({
+			status: 'error',
+			message:
+				'Your email is not verified, check the link verification in your inbox first!',
+		});
+	}
+
 	const isMatch = await bcrypt.compare(password, user[0].password);
 	if (!isMatch) {
-		return res.json({ status: 'error', message: ['email or password wrong!'] });
+		return res
+			.status(401)
+			.json({ status: 'error', message: ['email or password wrong!'] });
 	}
 
 	const userAccessToken = createAccessToken(user[0].user);
@@ -88,8 +103,9 @@ export const userLogin = async (req, res, next) => {
 	return res.json({
 		status: 'success',
 		message: 'Login success!',
-		token: userAccessToken,
+		accessToken: userAccessToken,
 		refreshToken: userRefreshToken,
+		isAdmin: user[0].admin === 1 ? true : false,
 	});
 };
 

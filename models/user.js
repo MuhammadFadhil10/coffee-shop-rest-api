@@ -19,9 +19,7 @@ export default class User {
 		return db.execute(`UPDATE user SET activate_token = '${newToken}'`);
 	}
 	static updateAuth(email) {
-		return db.execute(
-			`UPDATE user SET is_auth = ${true}, activate_token = default`
-		);
+		return db.execute(`UPDATE user SET activate_token = default`);
 	}
 	static updatePassword(newPassword, userId) {
 		return db.execute(
