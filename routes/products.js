@@ -4,7 +4,6 @@ const router = express.Router();
 
 import {
 	getAllProducts,
-	addProducts,
 	productsSort,
 	searchProducts,
 } from '../controllers/product.js';
@@ -18,6 +17,5 @@ router.get('/products', getAllProducts);
 router.get(`/products/search`, searchProducts);
 
 // POST
-router.post('/add-product', addProducts);
 
 export default router;

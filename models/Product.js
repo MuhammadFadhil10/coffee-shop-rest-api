@@ -51,11 +51,11 @@ export default class Product {
 				: db.execute(`SELECT * FROM products WHERE name LIKE '${letter}%'`);
 		}
 	}
-	// static searchProductsLetter(letter, show) {
-	// 	return db.execute(
-	// 		`SELECT * FROM products WHERE name LIKE '${letter}%'${
-	// 			page ? 'LIMIT ' + `${(show, page)}` : 'LIMIT ' + show
-	// 		}`
-	// 	);
-	// }
+
+	static createProduct(id, image, productName, productPrice, productDesc) {
+		return db.execute(
+			`INSERT INTO products(id,image,name,price,description) VALUES(?,?,?,?,?)`,
+			[id, image, productName, productPrice, productDesc]
+		);
+	}
 }

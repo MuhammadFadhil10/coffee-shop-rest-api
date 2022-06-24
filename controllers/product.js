@@ -1,9 +1,22 @@
 import Product from '../models/Product.js';
+import { v4 } from 'uuid';
 
 export const addProducts = async (req, res, next) => {
-	const { productName, productPrice } = req.params;
+	const { productName, productPrice, productDesc } = req.body;
+	const imageUrl =
+		req.protocol +
+		'://' +
+		req.get('host') +
+		'/' +
+		req.file.path.replace('\\', '/').replace('\\', '/');
 
-	await Product.addProduct(productName, productPrice);
+	await Product.createProduct(
+		v4(),
+		imageUrl,
+		productName,
+		productPrice,
+		productDesc
+	);
 
 	return res
 		.status(200)
